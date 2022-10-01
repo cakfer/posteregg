@@ -1,0 +1,32 @@
+a(href="https://github.com/echamudi/poster-egg", target="_blank").github-badge.hidden-xs
+    img(src="https://raw.githubusercontent.com/aral/fork-me-on-github-retina-ribbons/master/images-after-imageoptim/fork-me-right-graphite.png" srcset="https://raw.githubusercontent.com/aral/fork-me-on-github-retina-ribbons/master/images-after-imageoptim/fork-me-right-graphite.png 1x, https://raw.githubusercontent.com/aral/fork-me-on-github-retina-ribbons/master/images-after-imageoptim/fork-me-right-graphite%402x.png 2x" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png")
+.topbar
+    .container
+        h1 Poster #[span.egg Egg]
+.topbar-pad
+.container
+    div
+        .row
+            .col-xs-12
+                browser-support
+    div(*ngIf="!packs")
+        .row
+            .col-xs-12
+                .progress
+                    .progress-bar.progress-bar-striped.active(role='progressbar', style='width: 100%') Loading...
+    div(*ngFor='let pack of packs')
+        .row.pack-heading
+            .col-xs-12
+                h2.pack-title {{ pack.title[translate.currentLang] }}
+                p.pack-description {{ pack.description[translate.currentLang] }}
+        .row.pack-content
+            .col-sm-6.col-md-4.col-lg-3(*ngFor='let design of pack.designs')
+                .panel.panel-design
+                    .panel-heading {{ design.title[translate.currentLang] }}
+                    .panel-body
+                        img.img-responsive(
+                            [attr.src]="getDesignThumbnail(pack.packID, design.designID)", 
+                            [routerLink]="['/editor', pack.packID, design.designID]",
+                            (error)="$event.target.src = '/assets/no-preview.svg'")
+                    .panel-footer
+                        a.btn.btn-go.btn-block([routerLink]="['/editor', pack.packID, design.designID]")  {{ "choose this design" | translate | titleize }}

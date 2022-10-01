@@ -1,0 +1,22 @@
+{
+    "include": [
+        "./src/**/*"
+    ],
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "rasterizehtml": [ "@types/rasterizehtml/index.d.ts", "node_modules/rasterizehtml/dist/rasterizeHTML" ]
+        },
+        "noImplicitAny": true,
+        "target": "es5",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "allowSyntheticDefaultImports": true,
+        "noEmitOnError": false,
+        "outDir": "dist-tsc"
+    }
+}

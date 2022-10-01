@@ -1,0 +1,28 @@
+modal
+    .content-body 
+        .modal-title {{ "Are you sure to exit without downloading the poster?" | translate }}
+        p {{ "Your changes will be lost if you don’t download it." | translate }}
+    .content-footer
+        button.btn.btn-default(type='button', (click)='modal.hide()') {{ "cancel" | translate | titleize }}
+        .flex-1        
+        button.btn.btn-default(type='button', (click)="this.guard = false; exit()") {{ "discard and exit" | translate | titleize }}
+        button.btn.btn-go(type='button', [ngClass]="{'disabled': !resultImgSrc}", (click)="download(); exit();") {{ "download and exit" | translate | titleize }}
+.hero
+.container
+    .row
+        .col-lg-1.visible-lg-block
+        .col-md-8.col-lg-6.col-result
+            .panel.panel-default
+                .panel-body
+                    .progress(*ngIf='!resultImgSrc') 
+                        .progress-bar.progress-bar-striped.active(role='progressbar', style='width: 100%') {{ "processing" | translate | titleize }}...
+                    img.img-responsive(*ngIf='resultImgSrc', [attr.src]="resultImgSrc")
+        .col-md-4.col-lg-4
+            .panel.panel-default.panel-actions
+                .panel-body
+                    a.btn.btn-go.btn-block([ngClass]="{'disabled': !resultImgSrc}", (click)="download()") {{ "download" | translate | titleize }}
+                    a.btn.btn-default.btn-block((click)="back()") {{ "edit again" | translate | titleize }}
+                    a.btn.btn-default.btn-block((click)="exit()") {{ "exit" | translate | titleize }}
+                    p.ending-words {{ "Thanks for using Poster Egg." | translate }}
+        .col-lg-1.visible-lg-block
+        

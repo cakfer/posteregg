@@ -1,0 +1,63 @@
+div.hidden([innerHTML]="artboardScaleStyle | safe: 'html'")
+.hero.visible-min-sm-block
+modal
+    .content-body 
+        .modal-title {{ "Do you want to save the changes made to the poster?" | translate }}
+        p {{ "Your changes will be lost if you don’t save them." | translate }}
+    .content-footer
+        button.btn.btn-default(type='button', (click)='modal.hide()')  {{ "cancel" | translate | titleize }}
+        .flex-1        
+        button.btn.btn-default(type='button', (click)='this.guard = false', routerLink="/")  {{ "don't save" | translate | titleize }}
+        button.btn.btn-go(type='button', (click)='finalize()')  {{ "save" | translate | titleize }} ...
+.editor-container
+    .editor-content
+        .loading.alert.alert-info(
+            [ngClass]="{'loading-still': somethingIsLoading}"
+            )
+            .loader.loader-info.loader-sm
+            span Loading materials ...
+        #artboardContainer(artboardContainer="", (init)="alert('tom')", [innerHTML]="artboard.output | safe: 'html'")
+    .editor-sidebar
+        .editor-tools
+            div
+                browser-support
+            div.form-group(*ngFor='let designProperty of designPropertiesArray')
+                label(*ngIf="designProperty.label && designProperty.input !== 'none'") {{ designProperty.label[translate.currentLang] }}
+
+                textarea.form-control(
+                    *ngIf="designProperty.input === 'text'", 
+                    type='text', 
+                    [attr.designPropertyBinder]="designProperty._objectKey", 
+                    (input)='onInputChange($event); textareaFitter($event.target)',
+                    ) {{ textareaProcess(designProperty) }}
+
+                input(
+                    *ngIf="designProperty.input === 'range'", 
+                    type='range', 
+                    [attr.designPropertyBinder]="designProperty._objectKey", 
+                    [attr.min]="designProperty.min", 
+                    [attr.max]="designProperty.max",
+                    [attr.step]="designProperty.step",
+                    [attr.value]="designProperty.value", 
+                    (input)='onInputChange($event)', 
+                    ) 
+                
+                input(
+                    *ngIf="designProperty.input === 'image'", 
+                    type="file", 
+                    accept="image/*",
+                    [attr.designPropertyBinder]="designProperty._objectKey", 
+                    (change)="onFileChange($event)", 
+                    )
+                    
+                hr(
+                    *ngIf="designProperty.input === 'separator'", 
+                    ) 
+
+            div(*ngIf="resultSrc")
+                img#resultSVG([attr.src]="resultSrc | safe: 'url'")
+
+        .editor-actions
+            button.btn.btn-default(type="button", routerLink="/") {{ "discard" | translate | titleize }}
+            .separator
+            button.btn.btn-go(type="button", (click)='finalize()') {{ "save" | translate | titleize }}
